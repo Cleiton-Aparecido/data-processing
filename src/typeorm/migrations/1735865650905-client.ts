@@ -38,6 +38,22 @@ export class Client1735865650905 implements MigrationInterface {
             name: "nationality",
             type: "varchar",
           },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "CURRENT_TIMESTAMP",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "CURRENT_TIMESTAMP",
+            onUpdate: "CURRENT_TIMESTAMP",
+          },
+          {
+            name: "deleted_at",
+            type: "timestamp",
+            isNullable: true,
+          },
         ],
       })
     );
@@ -85,6 +101,22 @@ export class Client1735865650905 implements MigrationInterface {
           {
             name: "address",
             type: "int",
+            isNullable: true,
+          },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "CURRENT_TIMESTAMP",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "CURRENT_TIMESTAMP",
+            onUpdate: "CURRENT_TIMESTAMP",
+          },
+          {
+            name: "deleted_at",
+            type: "timestamp",
             isNullable: true,
           },
         ],
