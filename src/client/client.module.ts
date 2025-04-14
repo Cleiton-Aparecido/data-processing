@@ -7,7 +7,6 @@ import { clientEntity } from "src/typeorm/entities/client.entity";
 @Module({
   imports: [
     forwardRef(() => ClientModule),
-
     TypeOrmModule.forFeature([clientEntity]),
   ],
   controllers: [],
