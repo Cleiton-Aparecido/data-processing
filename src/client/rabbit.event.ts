@@ -12,7 +12,6 @@ export class rabbitEvent {
     queue: "down.save-data-queue",
   })
   async includeClient(message): Promise<void> {
-    console.log("message", message);
     await this.clientService.readFile(message);
   }
 }

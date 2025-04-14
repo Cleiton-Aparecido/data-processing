@@ -4,7 +4,7 @@ import { addressEntity } from "./address.entity";
 @Entity({ name: "client" })
 export class clientEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   name: string;
@@ -16,7 +16,7 @@ export class clientEntity {
   telephone: string;
 
   @Column()
-  cpf: string;
+  cpf?: string;
 
   @Column()
   rg: string;

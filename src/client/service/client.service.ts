@@ -46,13 +46,22 @@ export class ClientService {
   async readFile(pathArchive) {
     await this.readCSVStream(pathArchive);
 
-    for await (const x of this.readCSVStream(pathArchive)) {
-      console.log(x);
+    for await (const dataArchive of this.readCSVStream(pathArchive)) {
+      const data: Partial<clientEntity> = {
+        name: dataArchive.name,
+        telephone: dataArchive.telephone,
+        email: dataArchive.email,
+        cpf: dataArchive.cpf,
+        rg: dataArchive.rg,
+        father: dataArchive.father,
+        mother: dataArchive.mother,
+      };
+
+      await this.clientRepository.save(data);
     }
 
-    console.log("This action adds a new saveDatum");
-    // this.clientRepository.create(createSaveDatumDto);
-    // this.clientRepository.save(createSaveDatumDto);
-    return "This action adds a new saveDatum";
+    //ideia: cria um sistema websocket para comnucar que o dados foram importados com sucesso
+
+    return { message: "Arquivo importado com sucesso" };
   }
 }

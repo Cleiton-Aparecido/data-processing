@@ -40,20 +40,19 @@ export class ArquiveService {
     return filePath;
   }
 
-  async manipulationArquive(file: Express.Multer.File) {
-    if (!file) {
+  async manipulationArquive(path: string): Promise<{ message: string }> {
+    if (!path) {
       throw new HttpException(
         { status: 403, error: "Nenhum arquivo importado" },
         403
       );
     }
 
-    const path = await this.createArquive(file);
     this.amqpConnection.publish(
       "process-arquive",
       "key.save-data-routing-key-client",
       path
     );
-    return { message: "Arquivo Importado com sucesso", path: path };
+    return { message: "Arquivo Importado com sucesso" };
   }
 }
