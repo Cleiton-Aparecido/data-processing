@@ -1,9 +1,14 @@
-import { Injectable } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { clientEntity } from "src/typeorm/entities/client.entity";
 import { Repository } from "typeorm/repository/Repository";
 import * as fs from "fs";
 import * as readline from "readline";
+import { deleteFile } from "src/utils/delete-file";
 
 @Injectable()
 export class ClientService {
@@ -44,24 +49,33 @@ export class ClientService {
   }
 
   async readFile(pathArchive) {
-    await this.readCSVStream(pathArchive);
+    Logger.log(`Lendo o arquivo ${pathArchive}`);
+    try {
+      await this.readCSVStream(pathArchive);
 
-    for await (const dataArchive of this.readCSVStream(pathArchive)) {
-      const data: Partial<clientEntity> = {
-        name: dataArchive.name,
-        telephone: dataArchive.telephone,
-        email: dataArchive.email,
-        cpf: dataArchive.cpf,
-        rg: dataArchive.rg,
-        father: dataArchive.father,
-        mother: dataArchive.mother,
-      };
+      for await (const dataArchive of this.readCSVStream(pathArchive)) {
+        const data: Partial<clientEntity> = {
+          name: dataArchive.name,
+          telephone: dataArchive.telephone,
+          email: dataArchive.email,
+          cpf: dataArchive.cpf,
+          rg: dataArchive.rg,
+          father: dataArchive.father,
+          mother: dataArchive.mother,
+        };
 
-      await this.clientRepository.save(data);
+        try {
+          await this.clientRepository.save(data);
+        } catch (error) {
+          console.error(
+            `Erro ao salvar registro: ${JSON.stringify(data)}\n`,
+            error
+          );
+        }
+      }
+      deleteFile(pathArchive);
+    } catch (error) {
+      throw new InternalServerErrorException("Erro ao importar o arquivo");
     }
-
-    //ideia: cria um sistema websocket para comnucar que o dados foram importados com sucesso
-
-    return { message: "Arquivo importado com sucesso" };
   }
 }

@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { ArquiveService } from './arquive.service';
-import { ArquiveController } from './arquive.controller';
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
-import { RabbitConfigService } from 'src/queue/rabbitmq.config';
+import { Module } from "@nestjs/common";
+import { ArquiveService } from "./services/arquive.service";
+import { ArquiveController } from "./controllers/arquive.controller";
+import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
+import { RabbitConfigService } from "src/queue/rabbitmq.config";
 
 @Module({
   imports: [

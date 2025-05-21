@@ -1,11 +1,13 @@
+require('dotenv').config();
+
 module.exports = {
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "1234",
-  database: "database_archive",
-  synchronize: false,
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  synchronize: process.env.DB_SYNCHRONIZE === "true",
   logging: true,
   entities: [__dirname + "/entity/*.ts"],
   migrations: [__dirname + "/migrations/*.js"],
