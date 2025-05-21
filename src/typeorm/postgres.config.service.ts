@@ -13,7 +13,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
         | "mariadb",
       host: this.configService.get<string>("DB_HOST"),
       port: Number(this.configService.get<number>("DB_PORT")),
-      username: this.configService.get<string>("DB_USERNAME"),
+      username: this.configService.get<string>("DB_USER"),
       password: this.configService.get<string>("DB_PASSWORD"),
       database: this.configService.get<string>("DB_DATABASE"),
       entities: [__dirname + "/**/*.entity{.ts,.js}"],

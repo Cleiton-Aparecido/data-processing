@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: nest-app
+    restart: always
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - rabbitmq
+    command: >
+      sh -c "yarn migrate:run && yarn start:prod"
+    networks:
+      - app-network
+    volumes:
+      - .:/usr/src/app
+      - ./temp:/usr/src/app/temp 
+    environment:
+      DB_HOST: db               
+      DB_PORT: 3306            
+      RABBITMQ_URI: amqp://guest:guest@rabbitmq:5672 
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: dataarquive
+      MYSQL_USER: user_app
+      MYSQL_PASSWORD: 12345
+    ports:
+      - "3307:3306"            
+    networks:
+      - app-network
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"         
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+
+volumes:
+  dbdata:
+
+networks:
+  app-network:
