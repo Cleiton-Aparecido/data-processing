@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
-import { ClientService } from "./service/client.service";
+import { ClientService } from "../services/client.service";
 
 @Controller()
 export class rabbitEvent {
@@ -11,7 +11,7 @@ export class rabbitEvent {
     routingKey: "key.save-data-routing-key-client",
     queue: "down.save-data-queue",
   })
-  async includeClient(message): Promise<void> {
-    await this.clientService.readFile(message);
+  async includeClient(pathArchive: string): Promise<void> {
+    this.clientService.readFile(pathArchive);
   }
 }

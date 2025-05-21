@@ -2,12 +2,15 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ArquiveService } from "./arquive.service";
+import { ArquiveService } from "../services/arquive.service";
 import { diskStorage } from "multer";
 import { extname } from "path";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+@UseGuards(JwtAuthGuard)
 @Controller("arquive")
 export class ArquiveController {
   constructor(private readonly arquiveService: ArquiveService) {}

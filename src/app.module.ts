@@ -8,12 +8,13 @@ import { ConfigModule } from "@nestjs/config";
 import { RabbitConfigService } from "./queue/rabbitmq.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostgresConfigService } from "./typeorm/postgres.config.service";
+import { UserModule } from "./users/users.module";
+import { AuthModule } from "./auth/module.auth";
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useClass: PostgresConfigService,
-      inject: [PostgresConfigService],
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -21,8 +22,10 @@ import { PostgresConfigService } from "./typeorm/postgres.config.service";
     RabbitMQModule.forRootAsync(RabbitMQModule, {
       useClass: RabbitConfigService,
     }),
+    AuthModule,
     ClientModule,
     ArquiveModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
