@@ -10,9 +10,10 @@ export class RabbitConfigService {
         {
           name: "process-arquive",
           type: "topic",
+          options: { durable: true },
         },
       ],
-      uri: process.env.RABBIT_MQ || "amqp://guest:guest@localhost:5672",
+      uri: process.env.RABBITMQ_URI,
       prefetchCount: 1,
       connectionInitOptions: {
         wait: false,
