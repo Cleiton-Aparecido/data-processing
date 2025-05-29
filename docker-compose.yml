@@ -1,10 +1,7 @@
-version: '3.8'
-
 services:
   app:
+    image: nest-app
     build: .
-    container_name: nest-app
-    restart: always
     ports:
       - "3001:3000"
     env_file:
@@ -22,19 +19,24 @@ services:
     environment:
       DB_HOST: db               
       DB_PORT: 3306            
-      RABBITMQ_URI: amqp://guest:guest@rabbitmq:5672 
+      RABBITMQ_URI: amqp://guest:guest@rabbitmq:5672
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          memory: 300M
+        reservations:
+          memory: 256M
 
   db:
     image: mysql:8.0
-    container_name: mysql-db
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: dataarquive
       MYSQL_USER: user_app
       MYSQL_PASSWORD: 12345
     ports:
-      - "3307:3306"            
+      - "3307:3306"
     networks:
       - app-network
     volumes:
@@ -42,11 +44,9 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
-    restart: always
     ports:
       - "5672:5672"
-      - "15672:15672"         
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
