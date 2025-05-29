@@ -97,3 +97,30 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Intuito da aplicação
+- Desenvolvi essa aplicação, com intuido de trabalhar com multiplas intâncias, e importação de um arquivo pesado. Tratando e limitando recurso da aplicação, e analisar se o desempenho esta acessivel, e caso aplicação venha paraf de funcionar, o processo fique salvo no rabbitMQ, para que quando aplicação voltar a funcionar, continue processando o arquivo e salvando no banco de dados.
+
+## Como executar a aplicação com multiplas instâncias
+
+### ✅ Pré-requisitos
+
+- [Docker](https://www.docker.com/) instalado
+- [Docker Compose](https://docs.docker.com/compose/) instalado
+- (Opcional) Docker Swarm iniciado:
+
+  ```bash
+  docker swarm init
+  ```
+
+- (Opcional) build da imagem:
+
+  ```bash
+  docker build -t nest-app .
+  ```
+
+- Subir os containers com múltiplas instâncias:
+  ```bash
+  docker stack deploy -c docker-compose.yml minha-stack
+  ```
+
