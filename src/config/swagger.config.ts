@@ -1,5 +1,6 @@
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { INestApplication } from "@nestjs/common";
+import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 
 export function setupSwagger(app: INestApplication): void {
   const config = new DocumentBuilder()
@@ -9,15 +10,15 @@ export function setupSwagger(app: INestApplication): void {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+
+  const theme = new SwaggerTheme();
+  const darkStyle = theme.getBuffer(SwaggerThemeNameEnum.DARK);
+
   SwaggerModule.setup("api", app, document, {
-    customCssUrl: "/public/swagger-dark.css",
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customCss: darkStyle,
     customSiteTitle: "API Docs - Dark Mode",
   });
-
-  //   SwaggerModule.setup("api", app, document, {
-  //     swaggerOptions: {
-  //       theme: "dark",
-  //     },
-  //     customSiteTitle: "Documentação API",
-  //   });
 }
