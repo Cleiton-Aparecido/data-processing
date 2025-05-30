@@ -8,6 +8,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { setupSwagger } from "./config/swagger.config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,14 +22,7 @@ async function bootstrap() {
     })
   );
 
-  const config = new DocumentBuilder()
-    .setTitle("API de Processamento de Dados")
-    .setDescription("Documentação com Swagger")
-    .setVersion("1.0")
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document);
+  setupSwagger(app);
 
   await app.listen(process.env.PORT);
   Logger.log(`Servidor rodando em http://localhost:${process.env.PORT}`);

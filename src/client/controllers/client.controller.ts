@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, Put, Query } from "@nestjs/common";
 import { ClientService } from "../services/client.service";
 import { DataClienteDto } from "../dto/dataCliente.dto";
 import { ApiTags } from "@nestjs/swagger";
@@ -10,6 +10,11 @@ export class ClientController {
 
   @Get("getClient")
   async reportClient(@Query() query: DataClienteDto) {
+    return await this.clientService.getClent(query);
+  }
+
+  @Put("updateClient")
+  async updateClient(@Query() query: DataClienteDto) {
     return await this.clientService.getClent(query);
   }
 }
