@@ -10,6 +10,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostgresConfigService } from "./typeorm/postgres.config.service";
 import { UserModule } from "./users/users.module";
 import { AuthModule } from "./auth/module.auth";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
@@ -21,6 +23,10 @@ import { AuthModule } from "./auth/module.auth";
     }),
     RabbitMQModule.forRootAsync(RabbitMQModule, {
       useClass: RabbitConfigService,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public"), // Serve `public/swagger-dark.css`
+      serveRoot: "/public",
     }),
     AuthModule,
     ClientModule,
