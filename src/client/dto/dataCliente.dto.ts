@@ -9,9 +9,11 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 
-export class DataClienteDto {
+export class DataClientDto {
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
+  @IsNumber({}, { message: "id deve ser um número" })
   id?: number;
 
   @IsOptional()
@@ -39,6 +41,10 @@ export class DataClienteDto {
   @IsString()
   @IsOptional()
   mother: string;
+
+  @IsString()
+  @IsOptional()
+  telephone: string;
 
   @Type(() => Date)
   @IsOptional()
