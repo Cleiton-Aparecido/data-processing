@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { clientEntity } from "src/typeorm/entities/client.entity";
 import { ClientController } from "./controllers/client.controller";
 import { ImportClientFromCSVUseCase } from "./services/use-case/importClient-usecase";
+import { ClientRepository } from "./repository/client.repository";
 
 @Module({
   imports: [
@@ -12,6 +13,11 @@ import { ImportClientFromCSVUseCase } from "./services/use-case/importClient-use
     TypeOrmModule.forFeature([clientEntity]),
   ],
   controllers: [ClientController],
-  providers: [ClientService, ImportClientFromCSVUseCase, rabbitEvent],
+  providers: [
+    ClientService,
+    ImportClientFromCSVUseCase,
+    ClientRepository,
+    rabbitEvent,
+  ],
 })
 export class ClientModule {}
