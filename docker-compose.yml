@@ -21,7 +21,7 @@ services:
       DB_PORT: 3306            
       RABBITMQ_URI: amqp://guest:guest@rabbitmq:5672
     deploy:
-      replicas: 5
+      replicas: 3
       resources:
         limits:
           memory: 300M

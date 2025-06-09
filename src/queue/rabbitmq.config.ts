@@ -1,10 +1,12 @@
 import { RabbitMQConfig } from "@golevelup/nestjs-rabbitmq";
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { ConfigurableModuleOptionsFactory } from "@nestjs/common";
 
 @Injectable()
-export class RabbitConfigService {
-  async createModuleConfig(): Promise<RabbitMQConfig> {
+export class RabbitConfigService
+  implements ConfigurableModuleOptionsFactory<RabbitMQConfig, "create">
+{
+  create(): RabbitMQConfig {
     return {
       exchanges: [
         {
