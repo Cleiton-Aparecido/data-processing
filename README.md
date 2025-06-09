@@ -128,5 +128,5 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 - derrubar os containers com múltiplas instâncias:
   ```bash
-  docker stack leave --force
+  docker swarm leave --force
   ```
