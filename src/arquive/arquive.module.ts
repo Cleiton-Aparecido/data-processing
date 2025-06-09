@@ -6,7 +6,7 @@ import { RabbitConfigService } from "src/queue/rabbitmq.config";
 
 @Module({
   imports: [
-    RabbitMQModule.forRootAsync(RabbitMQModule, {
+    RabbitMQModule.forRootAsync({
       useClass: RabbitConfigService,
     }),
   ],

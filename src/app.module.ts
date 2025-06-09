@@ -1,6 +1,4 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { ArquiveModule } from "./arquive/arquive.module";
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 import { ClientModule } from "./client/client.module";
@@ -21,7 +19,7 @@ import { join } from "path";
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    RabbitMQModule.forRootAsync(RabbitMQModule, {
+    RabbitMQModule.forRootAsync({
       useClass: RabbitConfigService,
     }),
     ServeStaticModule.forRoot({
@@ -33,7 +31,5 @@ import { join } from "path";
     ArquiveModule,
     UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
