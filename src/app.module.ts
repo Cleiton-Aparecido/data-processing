@@ -23,7 +23,7 @@ import { join } from "path";
       useClass: RabbitConfigService,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "public"), // Serve `public/swagger-dark.css`
+      rootPath: join(__dirname, "..", "public"),
       serveRoot: "/public",
     }),
     AuthModule,
