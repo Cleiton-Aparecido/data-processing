@@ -15,8 +15,8 @@ export class UsersService {
   }
 
   async create(user: Partial<userEntity>): Promise<userEntity> {
-    const newUser = this.usersRepository.create(user);
-    return this.usersRepository.save(newUser);
+    const newUser = await this.usersRepository.create(user);
+    return await this.usersRepository.save(newUser);
   }
 
   async findAll(): Promise<userEntity[]> {

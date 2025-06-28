@@ -1,33 +1,45 @@
-import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { Test, TestingModule } from "@nestjs/testing";
 import request from "supertest";
-
-import { AppModule } from "./../src/app.module"; // ajuste conforme seu projeto
-import { getConnection } from "typeorm";
+import { AppModule } from "../src/app.module";
+import { userEntity } from "src/typeorm/entities/users.entity";
+import { DataSource } from "typeorm";
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication;
-
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule], // AppModule deve importar AuthModule
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-    await app.init();
-  });
-
-  afterAll(async () => {
-    // Limpa o banco após os testes
-    await getConnection().dropDatabase();
-    await app.close();
-  });
+  let dataSource: DataSource;
 
   const user = {
     username: "testuser",
     password: "StrongP@ss123",
   };
+
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
+
+    dataSource = app.get(DataSource);
+    await dataSource
+      .getRepository(userEntity)
+      .delete({ username: user.username });
+  });
+
+  afterAll(async () => {
+    await dataSource
+      .getRepository(userEntity)
+      .delete({ username: user.username });
+
+    if (dataSource.isInitialized) {
+      await dataSource.destroy();
+    }
+
+    await app.close();
+  });
 
   it("/auth/register (POST) - deve registrar um novo usuário", async () => {
     const response = await request(app.getHttpServer())
@@ -38,6 +50,7 @@ describe("AuthController (e2e)", () => {
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("username", user.username);
     expect(response.body).toHaveProperty("isActive", true);
+    return response;
   });
 
   it("/auth/register (POST) - deve falhar ao registrar usuário já existente", async () => {

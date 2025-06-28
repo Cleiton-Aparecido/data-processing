@@ -40,7 +40,7 @@ export class AuthController {
       statusCode: 401,
     },
   })
-  async register(@Body() auth: AuthDto) {
+  async register(@Body() auth: AuthDto): Promise<any> {
     return this.authService.register(auth);
   }
 

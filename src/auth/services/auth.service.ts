@@ -38,7 +38,7 @@ export class AuthService {
     }
   }
 
-  async register(auth: AuthDto) {
+  async register(auth: AuthDto): Promise<any> {
     const { username, password } = auth;
     try {
       const userExists = await this.usersService.findByUsername(username);
